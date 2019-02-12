@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import DataArray from './dataArray';
+import DataArray from './DataArray';
 
 class App extends Component {
   render() {

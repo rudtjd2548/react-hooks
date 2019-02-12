@@ -1,57 +1,103 @@
 import React, { useState, useRef } from 'react';
 
-import DataRow from './dataRow';
-import DataForm from './dataForm';
-import { getInputElement } from './utils/helper';
+import Input from './components/UI/Input/Cell';
+import DataForm from './DataForm';
+import {
+  getInputElement,
+  updateObject,
+  checkValidity,
+  inputConfigToArray
+} from './utils/helper';
 
 const dataArray = () => {
-  const initNewProduct = { name: '', qty: '', price: '' };
-  const [newProduct, setNewProduct] = useState(initNewProduct);
-  const initProducts = [
-    { index: 1, name: 'banana', qty: '1', price: '300' },
-    { index: 2, name: 'cheese', qty: '20', price: '1400' }
-  ];
-  const [products, setProducts] = useState(initProducts);
   const inputRef = useRef();
-
-  const addDataRow = newData => {
-    const newDatas = [...products, { ...newData, index: products.length + 1 }];
-    setProducts(newDatas);
-  };
-
-  const handleSubmit = (type, e) => {
-    e.preventDefault();
-    if (type === 'old') {
-      console.log('save');
-    } else if (type === 'new') {
-      console.log(products);
-      if (!newProduct) return;
-      addDataRow(newProduct);
-      setNewProduct(initNewProduct);
-      inputRef.current.focus();
+  const initNewProduct = {
+    product: {
+      elementType: 'input',
+      elementConfig: {
+        type: 'text',
+        name: 'product',
+        placeholder: 'product',
+        autoComplete: 'off'
+      },
+      value: '',
+      validation: {
+        required: true
+      },
+      valid: false,
+      touched: false
+    },
+    qty: {
+      elementType: 'input',
+      elementConfig: {
+        type: 'number',
+        name: 'qty',
+        placeholder: 'qty',
+        autoComplete: 'off'
+      },
+      value: '',
+      validation: {
+        required: true
+      },
+      valid: false,
+      touched: false
+    },
+    price: {
+      elementType: 'input',
+      elementConfig: {
+        type: 'number',
+        name: 'price',
+        placeholder: 'price',
+        autoComplete: 'off'
+      },
+      value: '',
+      validation: {
+        required: true
+      },
+      valid: false,
+      touched: false
     }
   };
 
+  const [newProduct, setNewProduct] = useState(initNewProduct);
+  const [products, setProducts] = useState([]);
+  const [formIsValid, setFormIsValid] = useState(false);
+
   const handleChange = (type, index) => e => {
-    const inputName = e.target.name;
+    const identifier = e.target.name;
+
     if (type === 'new') {
-      setNewProduct({ ...newProduct, [inputName]: e.target.value });
+      const updatedFormElement = updateObject(newProduct[identifier], {
+        value: e.target.value,
+        valid: checkValidity(e.target.value, newProduct[identifier].validation),
+        touched: true
+      });
+      const updatedForm = updateObject(newProduct, {
+        [identifier]: updatedFormElement
+      });
+      let isValid = true;
+      for (let identifier in updatedForm) {
+        isValid = updatedForm[identifier].valid && isValid;
+      }
+      setNewProduct(updatedForm);
+      setFormIsValid(isValid);
     } else if (type === 'old') {
       const copiedProducts = [...products];
-      copiedProducts[index][inputName] = e.target.value;
-      console.log(copiedProducts);
+      copiedProducts[index][identifier].value = e.target.value;
       setProducts(copiedProducts);
     }
   };
 
   const handleKeyCode = (type, index) => e => {
     const currentInput = e.target;
+
     const rightTarget = getInputElement(currentInput, 'next');
     const leftTarget = getInputElement(currentInput, 'before');
     const currentRowTarget = getInputElement(currentInput, 'currentRow');
     const upTarget = getInputElement(currentInput, 'up');
     const downTarget = getInputElement(currentInput, 'down');
     const currentColTarget = getInputElement(currentInput, 'currentCol');
+
     const samelogic = () => {
       e.preventDefault();
       if (type === 'old') {
@@ -67,8 +113,10 @@ const dataArray = () => {
         return rightTarget !== undefined
           ? rightTarget.select()
           : type === 'old'
-          ? downTarget['name'].select()
-          : handleSubmit(type, e);
+          ? downTarget[0].select()
+          : formIsValid
+          ? handleSubmit(type, e)
+          : currentRowTarget.select();
       case 37:
         samelogic();
         return leftTarget !== undefined
@@ -89,27 +137,56 @@ const dataArray = () => {
     }
   };
 
-  console.log('[DataArray] rendered');
+  const handleSubmit = (type, e) => {
+    e.preventDefault();
+    if (type === 'old') {
+      console.log('save');
+    } else if (type === 'new') {
+      addDataRow(newProduct);
+      setNewProduct(initNewProduct);
+      setFormIsValid(false);
+      inputRef.current.focus();
+    }
+  };
+
+  const addDataRow = newData => {
+    //const formData = {};
+    //for (let identifier in newData) {
+    //    formData[identifier] = newData[identifier].value;
+    //} ==== for server ====
+    const newProducts = [...products, { ...newData }];
+    setProducts(newProducts);
+  };
+
   return (
     <div id='data-row'>
       {products.map((product, index) => {
         return (
-          <DataRow
-            key={product.index}
-            index={index}
-            product={product}
-            handleKeyCode={handleKeyCode('old', index)}
-            handleChange={handleChange('old', index)}
-          />
+          <form index={index} key={index}>
+            {inputConfigToArray(product).map(identifier => {
+              return (
+                <Input
+                  key={identifier.id}
+                  elementType={identifier.config.elementType}
+                  elementConfig={identifier.config.elementConfig}
+                  value={identifier.config.value}
+                  invalid={!identifier.config.valid}
+                  touched={identifier.config.touched}
+                  handleChange={handleChange('old', index)}
+                  handleKeyCode={handleKeyCode('old', index)}
+                />
+              );
+            })}
+          </form>
         );
       })}
       <DataForm
-        handleKeyCode={handleKeyCode('new')}
+        index={products.length + 1}
         newProduct={newProduct}
         handleChange={handleChange('new')}
+        handleKeyCode={handleKeyCode('new')}
         handleSubmit={handleSubmit}
         ref={inputRef}
-        index={products.length + 1}
       />
     </div>
   );

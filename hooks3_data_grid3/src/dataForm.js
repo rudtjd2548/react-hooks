@@ -1,7 +1,10 @@
 import React, { forwardRef, useEffect } from 'react';
 
+import Input from './components/UI/Input/Cell';
+import { inputConfigToArray } from './utils/helper';
+
 const DataForm = forwardRef(
-  ({ newProduct, handleKeyCode, handleChange, handleSubmit, index }, ref) => {
+  ({ newProduct, handleKeyCode, handleChange, handleSubmit }, ref) => {
     useEffect(() => {
       ref.current.focus();
     }, []);
@@ -10,43 +13,21 @@ const DataForm = forwardRef(
 
     return (
       <form onSubmit={handleSubmit}>
-        <input
-          type='text'
-          name='index'
-          disabled
-          value={index}
-          onKeyDown={handleKeyCode}
-          autoComplete='off'
-          style={{ width: '1.5rem', textAlign: 'center' }}
-        />
-        <input
-          type='text'
-          name='name'
-          placeholder='name'
-          value={newProduct.name}
-          onChange={handleChange}
-          onKeyDown={handleKeyCode}
-          autoComplete='off'
-          ref={ref}
-        />
-        <input
-          type='number'
-          name='qty'
-          placeholder='qty'
-          value={newProduct.qty}
-          onChange={handleChange}
-          onKeyDown={handleKeyCode}
-          autoComplete='off'
-        />
-        <input
-          type='number'
-          name='price'
-          placeholder='price'
-          value={newProduct.price}
-          onChange={handleChange}
-          onKeyDown={handleKeyCode}
-          autoComplete='off'
-        />
+        {inputConfigToArray(newProduct, ref).map(identifier => {
+          return (
+            <Input
+              key={identifier.id}
+              elementType={identifier.config.elementType}
+              elementConfig={identifier.config.elementConfig}
+              value={identifier.config.value}
+              invalid={!identifier.config.valid}
+              shouldValidate={identifier.config.validation}
+              touched={identifier.config.touched}
+              handleChange={handleChange}
+              handleKeyCode={handleKeyCode}
+            />
+          );
+        })}
       </form>
     );
   }
