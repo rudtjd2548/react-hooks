@@ -1,0 +1,80 @@
+{
+  "product": {
+    "elementType": "input",
+    "elementConfig": {
+      "type": "text",
+      "name": "product",
+      "placeholder": "product",
+      "autoComplete": "off",
+      "size": "25"
+    },
+    "value": "",
+    "validation": {
+      "required": true
+    },
+    "valid": false,
+    "touched": false
+  },
+  "qty": {
+    "elementType": "input",
+    "elementConfig": {
+      "type": "text",
+      "name": "qty",
+      "placeholder": "qty",
+      "autoComplete": "off",
+      "size": "2"
+    },
+    "value": "",
+    "validation": {
+      "required": true,
+      "isNumeric": true
+    },
+    "valid": false,
+    "touched": false
+  },
+  "purchasePrice": {
+    "elementType": "input",
+    "elementConfig": {
+      "type": "text",
+      "name": "purchasePrice",
+      "placeholder": "Purchase Price",
+      "autoComplete": "off",
+      "size": "10",
+      "disabled": true
+    },
+    "value": "",
+    "valid": true,
+    "touched": false
+  },
+  "salesPrice": {
+    "elementType": "input",
+    "elementConfig": {
+      "type": "text",
+      "name": "salesPrice",
+      "placeholder": "Sales Price",
+      "autoComplete": "off",
+      "size": "10"
+    },
+    "value": "",
+    "validation": {
+      "required": true,
+      "isNumeric": true
+    },
+    "valid": false,
+    "touched": false
+  },
+  "storedBy": {
+    "elementType": "input",
+    "elementConfig": {
+      "type": "text",
+      "name": "storedBy",
+      "placeholder": "storedBy",
+      "autoComplete": "off",
+      "size": "15",
+      "disabled": true
+    },
+    "value": "keyanas warehouse",
+    "valid": true,
+    "touched": false
+  }
+}

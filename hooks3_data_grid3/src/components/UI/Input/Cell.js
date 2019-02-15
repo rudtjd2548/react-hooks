@@ -3,9 +3,9 @@ import React from 'react';
 import classes from './Cell.module.css';
 
 const input = props => {
+  console.log('[Cell] rendered');
   let inputElement = null;
   const inputClasses = [classes.InputElement];
-  console.log(props.invalid, props.shouldValidate, props.touched);
   if (props.invalid && props.shouldValidate && props.touched) {
     inputClasses.push(classes.Invalid);
   }

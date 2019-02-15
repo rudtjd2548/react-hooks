@@ -4,15 +4,20 @@ import Input from './components/UI/Input/Cell';
 import { inputConfigToArray } from './utils/helper';
 
 const DataForm = forwardRef(
-  ({ newProduct, handleKeyCode, handleChange, handleSubmit }, ref) => {
+  ({ newProduct, handleKeyCode, handleChange, handleSubmit, index }, ref) => {
     useEffect(() => {
-      ref.current.focus();
+      ref.current.form.elements[1].focus();
     }, []);
 
     console.log('[DataForm] rendered');
 
     return (
       <form onSubmit={handleSubmit}>
+        <input
+          disabled
+          value={index}
+          style={{ width: '2rem', textAlign: 'center' }}
+        />
         {inputConfigToArray(newProduct, ref).map(identifier => {
           return (
             <Input

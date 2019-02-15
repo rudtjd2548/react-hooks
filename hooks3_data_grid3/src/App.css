@@ -1,9 +1,25 @@
 .App {
   padding: 1rem;
 }
-
+form {
+  display: flex;
+  justify-content: center;
+}
 input {
-  padding: 0.2rem;
+  outline: none;
+  border: 1px solid #ccc;
+  background-color: white;
+  font: inherit;
+  box-sizing: border-box;
+  padding: 0.4rem;
   margin: 0.05rem;
-  width: 5rem;
+}
+span {
+  border: 1px solid #efefef;
+  box-sizing: border-box;
+  display: inline-block;
+  background-color: #efefef;
+  font-weight: bold;
+  padding: 0.4rem;
+  margin: 0.1rem;
 }

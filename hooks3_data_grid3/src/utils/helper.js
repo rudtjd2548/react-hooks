@@ -1,6 +1,13 @@
-export const getInputElement = (currentInput, direction, i) => {
+export const getInputElement = (currentInput, direction) => {
   const rowsArray = Array.from(currentInput.parentNode.elements);
   const colsArray = Array.from(document.getElementById('data-row').children);
+
+  let accessableRowsIndexes = [];
+  for (let i in rowsArray) {
+    if (rowsArray[i].disabled !== true) {
+      accessableRowsIndexes.push(Number(i));
+    }
+  }
 
   const currentColIndex = colsArray.findIndex(
     form => form === currentInput.form
@@ -12,18 +19,23 @@ export const getInputElement = (currentInput, direction, i) => {
     return colsArray[index].children;
   };
 
+  const newIndex = accessableRowsIndexes.indexOf(currentRowIndex);
+  const formattedRowsArray = i => {
+    return rowsArray[accessableRowsIndexes[i]];
+  };
+
   if (currentRowIndex === -1) return;
   switch (direction) {
     case 'first':
-      return rowsArray[0];
+      return formattedRowsArray(0);
     case 'last':
-      return rowsArray[rowsArray.length - 1];
+      return formattedRowsArray(accessableRowsIndexes.length - 1);
     case 'currentRow':
-      return rowsArray[currentRowIndex];
+      return formattedRowsArray(newIndex);
     case 'next':
-      return rowsArray[currentRowIndex + 1];
+      return formattedRowsArray(newIndex + 1);
     case 'before':
-      return rowsArray[currentRowIndex - 1];
+      return formattedRowsArray(newIndex - 1);
     case 'up':
       return colArray(currentColIndex - 1);
     case 'down':

@@ -1,0 +1,21 @@
+.suggestions {
+  border: 1px solid #999;
+  list-style: none;
+  max-height: 143px;
+  overflow-y: auto;
+  margin: 0 auto;
+  width: 45rem;
+}
+.suggestions li {
+  padding: 0.3rem;
+}
+
+.suggestion-active,
+.suggestions li:hover {
+  color: #008f68;
+  cursor: pointer;
+  font-weight: 700;
+}
+.suggestions li:not(:last-of-type) {
+  border-bottom: 1px solid #999;
+}

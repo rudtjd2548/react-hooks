@@ -4,9 +4,8 @@
   background-color: white;
   font: inherit;
   box-sizing: border-box;
-  padding: 0.2rem;
+  padding: 0.4rem;
   margin: 0.05rem;
-  width: 5rem;
 }
 
 .InputElement:focus {
@@ -16,5 +15,10 @@
 
 .Invalid {
   border: 1px solid red;
-  background-color: #fda49a;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
