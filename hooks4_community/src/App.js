@@ -1,12 +1,16 @@
 import React from 'react';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 
+import UserMap from './pages/mainPage/Map/Map';
 import './App.scss';
 
 const App = () => {
   return (
-    <React.Fragment>
-      <h1>Hello</h1>
-    </React.Fragment>
+    <BrowserRouter>
+      <>
+        <Route path='/' component={UserMap} />
+      </>
+    </BrowserRouter>
   );
 };
 
