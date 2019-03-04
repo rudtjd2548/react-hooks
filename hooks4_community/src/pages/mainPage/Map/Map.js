@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { load_google_map, handleLocationError } from '../../../utils/google';
 import GoogleStyleJSON from '../../../json/MapStyle.json';
+import './Map.scss';
 
 const UserMap = () => {
   const [locations, setLocations] = useState([
@@ -63,10 +64,10 @@ const UserMap = () => {
   }, []);
 
   return (
-    <React.Fragment>
-      <h1>active users</h1>
+    <div className='Map'>
+      <h3>Active users</h3>
       <div id='map' style={{ width: '400px', height: '400px' }} />
-    </React.Fragment>
+    </div>
   );
 };
 
